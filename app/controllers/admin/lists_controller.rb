@@ -1,7 +1,8 @@
 class Admin::ListsController < ApplicationController
-  before_action :set_list, only: [:show, :update, :destroy]
+  before_action :set_list, only: [:show, :update, :destroy, :assign_member, :unassign_member]
   before_action :authorize_as_admin
-  before_action :is_owner, only: [:update, :destroy]
+  before_action :is_owner, only: [:update, :destroy, :assign_member, :unassign_member]
+  before_action :set_user, only: [:assign_member, :unassign_member]
 
   # GET /lists
   def index
@@ -17,9 +18,10 @@ class Admin::ListsController < ApplicationController
 
   # POST /lists
   def create
-    @list = List.new(list_params)
+    @list = @current_user.owned_lists.new(list_params)
 
     if @list.save
+      @list.users << @current_user
       render json: @list, status: :created, location: @list
     else
       render json: @list.errors, status: :unprocessable_entity
@@ -40,6 +42,14 @@ class Admin::ListsController < ApplicationController
     @list.destroy
   end
 
+  def assign_member
+    @list.users << @user
+  end
+
+  def unassign_member
+    @user.lists.delete(@list)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_list
@@ -54,6 +64,10 @@ class Admin::ListsController < ApplicationController
 
     def is_list_owner
       render json: { error: 'You do not have permission for this' }, status: 403 unless @list.owner_id==@current_user.id
+    end
+
+    def set_user
+      @user = User.find(params[:user_id])
     end
 
 end
