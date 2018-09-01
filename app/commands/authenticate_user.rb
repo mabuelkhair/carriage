@@ -7,8 +7,9 @@ class AuthenticateUser
   end
 
   def call
-    token = JsonWebToken.encode(user_id: user.id) if user
-    user.token = token if user
+    user_obj = user
+    token = JsonWebToken.encode(user_id: user.id) if user_obj
+    user_obj.update_attribute(:token,token) if user_obj
     token
   end
 
