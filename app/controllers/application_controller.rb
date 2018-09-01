@@ -12,6 +12,6 @@ class ApplicationController < ActionController::API
   protected
   
   def authorize_as_admin
-    render json: { error: 'Not Authorized' }, status: 401 unless current_user.admin?
+    render json: { error: 'You do not have permission for this' }, status: 403 unless current_user.admin?
   end
 end

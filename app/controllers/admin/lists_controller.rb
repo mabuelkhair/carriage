@@ -1,6 +1,8 @@
 class Admin::ListsController < ApplicationController
   before_action :set_list, only: [:show, :update, :destroy]
   before_action :authorize_as_admin
+  before_action :is_owner, only: [:update, :destroy]
+
   # GET /lists
   def index
     @lists = List.all
@@ -48,4 +50,10 @@ class Admin::ListsController < ApplicationController
     def list_params
       params.require(:list).permit(:title)
     end
+
+
+    def is_list_owner
+      render json: { error: 'You do not have permission for this' }, status: 403 unless @list.owner_id==@current_user.id
+    end
+
 end
