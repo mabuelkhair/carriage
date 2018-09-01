@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   # == Relationships ========================================================
   has_many :owned_lists, :foreign_key => 'owner_id', :class_name => 'List'
-
+  has_and_belongs_to_many :lists
   # == Validations ==========================================================
   validates_presence_of     :email
   validates_presence_of     :username
