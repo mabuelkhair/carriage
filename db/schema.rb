@@ -10,18 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_01_192744) do
+ActiveRecord::Schema.define(version: 2018_09_01_211346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "lists", force: :cascade do |t|
+    t.bigint "owner_id"
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_lists_on_owner_id"
+  end
+
   create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "email"
+    t.string "username", null: false
+    t.string "email", null: false
     t.string "password_digest"
+    t.string "role", default: "member", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "token"
+    t.index ["email"], name: "index_users_on_email"
   end
 
+  add_foreign_key "lists", "users", column: "owner_id"
 end
