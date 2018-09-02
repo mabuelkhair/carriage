@@ -1,6 +1,6 @@
 class Admin::ListsController < ApplicationController
-  before_action :set_list, only: [:show, :update, :destroy, :assign_member, :unassign_member]
   before_action :authorize_as_admin
+  before_action :set_list, only: [:show, :update, :destroy, :assign_member, :unassign_member]
   before_action :is_list_owner, only: [:update, :destroy, :assign_member, :unassign_member]
   before_action :set_user, only: [:assign_member, :unassign_member]
 

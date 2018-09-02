@@ -1,6 +1,6 @@
-class Admin::CardsController < ApplicationController
-  before_action :set_card, only: [:show, :update, :destroy]
+class User::CardsController < ApplicationController
   before_action :set_list
+  before_action :set_card, only: [:show, :update, :destroy]
   before_action :is_card_owner, only: [:destroy, :update]
   before_action :is_list_member
   # GET /cards
