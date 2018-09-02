@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_02_134852) do
+ActiveRecord::Schema.define(version: 2018_09_02_224223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,18 @@ ActiveRecord::Schema.define(version: 2018_09_02_134852) do
     t.datetime "updated_at", null: false
     t.index ["list_id"], name: "index_cards_on_list_id"
     t.index ["owner_id"], name: "index_cards_on_owner_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "owner_id"
+    t.bigint "card_id"
+    t.bigint "comment_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_comments_on_card_id"
+    t.index ["comment_id"], name: "index_comments_on_comment_id"
+    t.index ["owner_id"], name: "index_comments_on_owner_id"
   end
 
   create_table "lists", force: :cascade do |t|
@@ -52,5 +64,8 @@ ActiveRecord::Schema.define(version: 2018_09_02_134852) do
 
   add_foreign_key "cards", "lists"
   add_foreign_key "cards", "users", column: "owner_id"
+  add_foreign_key "comments", "cards"
+  add_foreign_key "comments", "comments"
+  add_foreign_key "comments", "users", column: "owner_id"
   add_foreign_key "lists", "users", column: "owner_id"
 end
