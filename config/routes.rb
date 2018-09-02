@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   end
 
   namespace :user do
-    resources :lists, :only => [:show, :index] 
+    resources :lists, :only => [:show, :index] do
+      resources :cards
+    end
   end
   post 'login', to: 'authentication#login'
 end

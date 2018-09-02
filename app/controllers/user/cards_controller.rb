@@ -1,8 +1,8 @@
 class Admin::CardsController < ApplicationController
   before_action :set_card, only: [:show, :update, :destroy]
   before_action :set_list
-  before_action :authorize_as_admin
-  before_action :is_list_or_card_owner, only: [:destroy, :update]
+  before_action :is_card_owner, only: [:destroy, :update]
+  before_action :is_list_member
   # GET /cards
   def index
     @cards = @list.cards
@@ -49,8 +49,11 @@ class Admin::CardsController < ApplicationController
       @list = List.find(params[:list_id])
     end
 
-    def is_list_or_card_owner
-      render json: { error: 'You do not have permission for this' }, status: 403 unless @list.owner_id == @current_user.id || @card.owner_id == @current_user.id 
+    def is_list_member
+      @list.users.find(@current_user.id)
+    end
+    def is_card_owner
+      render json: { error: 'You do not have permission for this' }, status: 403 unless @card.owner_id == @current_user.id 
     end
     # Only allow a trusted parameter "white list" through.
     def card_params
