@@ -1,6 +1,6 @@
 class Admin::CardsController < ApplicationController
-  before_action :set_card, only: [:show, :update, :destroy]
   before_action :set_list
+  before_action :set_card, only: [:show, :update, :destroy]
   before_action :authorize_as_admin
   before_action :is_list_or_card_owner, only: [:destroy, :update]
   # GET /cards
