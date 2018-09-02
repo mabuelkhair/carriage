@@ -1,7 +1,7 @@
 class Admin::ListsController < ApplicationController
   before_action :set_list, only: [:show, :update, :destroy, :assign_member, :unassign_member]
   before_action :authorize_as_admin
-  before_action :is_owner, only: [:update, :destroy, :assign_member, :unassign_member]
+  before_action :is_list_owner, only: [:update, :destroy, :assign_member, :unassign_member]
   before_action :set_user, only: [:assign_member, :unassign_member]
 
   # GET /lists
@@ -22,7 +22,7 @@ class Admin::ListsController < ApplicationController
 
     if @list.save
       @list.users << @current_user
-      render json: @list, status: :created, location: @list
+      render json: @list, status: :created
     else
       render json: @list.errors, status: :unprocessable_entity
     end
