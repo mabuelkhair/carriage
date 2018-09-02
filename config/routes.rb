@@ -1,14 +1,14 @@
 Rails.application.routes.draw do
   resources :users
-  
+
   namespace :admin do
     resources :lists do
       member do 
         post 'assign_member'
         delete 'unassign_member'
       end
+      resources :cards
     end
-    resources :cards
   end
 
   namespace :user do
