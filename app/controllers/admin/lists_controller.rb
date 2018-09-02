@@ -44,6 +44,7 @@ class Admin::ListsController < ApplicationController
 
   def assign_member
     @list.users << @user
+    render json: { error: 'Member Assigned successfully' }, status: 200
   end
 
   def unassign_member
@@ -53,6 +54,7 @@ class Admin::ListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_list
+      puts params.inspect
       @list = List.find(params[:id])
     end
 
@@ -67,6 +69,11 @@ class Admin::ListsController < ApplicationController
     end
 
     def set_user
+      begin
+        params.require(:user_id)
+      rescue
+        render json: { :error => 'Parameter is Missing' }, status: 400 and return
+      end
       @user = User.find(params[:user_id])
     end
 
