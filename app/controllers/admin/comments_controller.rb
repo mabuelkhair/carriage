@@ -55,7 +55,7 @@ class Admin::CommentsController < ApplicationController
       @list = List.find(params[:list_id])
     end
     def is_list_or_comment_owner
-      render json: { error: 'You do not have permission for this' }, status: 403 unless @list.owner_id == @current_user.id || @comment.owner_id == @current_user.id 
+      render json: { error: 'You do not have permission for this' }, status: 403 unless @list.owner_id == @current_user['id'] || @comment.owner_id == @current_user['id'] 
     end
     # Only allow a trusted parameter "white list" through.
     def comment_params

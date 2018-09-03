@@ -8,8 +8,14 @@ class AuthenticateUser
 
   def call
     user_obj = user
-    token = JsonWebToken.encode(user_id: user.id) if user_obj
-    user_obj.update_attribute(:token,token) if user_obj
+    if user_obj
+      token = JsonWebToken.encode(user_id: user_obj.id,role: user_obj.role)
+      user_obj.update_attribute(:token,token)
+      cache_obj = $redis.hgetall("user:#{user_obj.id}")
+      cache_obj = {} unless cache_obj
+      cache_obj['token'] = token
+      $redis.mapped_hmset "user:#{user_obj.id}", cache_obj
+    end
     token
   end
 

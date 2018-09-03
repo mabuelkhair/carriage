@@ -56,10 +56,10 @@ class User::CommentsController < ApplicationController
       @list = List.find(params[:list_id])
     end
     def is_comment_owner
-      render json: { error: 'You do not have permission for this' }, status: 403 unless @comment.owner_id == @current_user.id 
+      render json: { error: 'You do not have permission for this' }, status: 403 unless @comment.owner_id == @current_user['id'] 
     end
     def is_list_member
-      @list.users.find(@current_user.id)
+      @list.users.find(@current_user['id'])
     end
 
     # Only allow a trusted parameter "white list" through.

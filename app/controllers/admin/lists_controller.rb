@@ -18,6 +18,7 @@ class Admin::ListsController < ApplicationController
 
   # POST /lists
   def create
+    @current_user = User.find(@current_user['id']) if not x.instance_of? User
     @list = @current_user.owned_lists.new(list_params)
 
     if @list.save
@@ -65,7 +66,7 @@ class Admin::ListsController < ApplicationController
 
 
     def is_list_owner
-      render json: { error: 'You do not have permission for this' }, status: 403 unless @list.owner_id==@current_user.id
+      render json: { error: 'You do not have permission for this' }, status: 403 unless @list.owner_id==@current_user['id']
     end
 
     def set_user

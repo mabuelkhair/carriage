@@ -17,7 +17,7 @@ class User::CardsController < ApplicationController
   # POST /cards
   def create
     @card = @list.cards.new(card_params)
-    @card.owner_id = @current_user.id
+    @card.owner_id = @current_user['id']
     if @card.save
       render json: @card, status: :created
     else
@@ -50,10 +50,10 @@ class User::CardsController < ApplicationController
     end
 
     def is_list_member
-      @list.users.find(@current_user.id)
+      @list.users.find(@current_user['id'])
     end
     def is_card_owner
-      render json: { error: 'You do not have permission for this' }, status: 403 unless @card.owner_id == @current_user.id 
+      render json: { error: 'You do not have permission for this' }, status: 403 unless @card.owner_id == @current_user['id'] 
     end
     # Only allow a trusted parameter "white list" through.
     def card_params

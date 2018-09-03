@@ -4,7 +4,7 @@ class User::ListsController < ApplicationController
 
   # GET /lists
   def index
-    @lists = @current_user.lists
+    @lists = List.where(owner_id: @current_user['id']) 
 
     render json: @lists
   end
@@ -25,7 +25,7 @@ class User::ListsController < ApplicationController
     end
 
     def is_list_member
-      @list.users.find(@current_user.id)
+      @list.users.find(@current_user['id'])
     end
 
 end
