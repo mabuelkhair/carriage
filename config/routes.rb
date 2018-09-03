@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :comments
   resources :users
 
   namespace :admin do
@@ -8,7 +7,9 @@ Rails.application.routes.draw do
         post 'assign_member'
         delete 'unassign_member'
       end
-      resources :cards
+      resources :cards do
+        resources :comments
+      end
     end
   end
 

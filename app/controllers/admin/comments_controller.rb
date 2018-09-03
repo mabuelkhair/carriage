@@ -1,5 +1,9 @@
-class CommentsController < ApplicationController
+class Admin::CommentsController < ApplicationController
+  before_action :authorize_as_admin
+  before_action :set_list, only: [:show, :update, :destroy]
+  before_action :set_card, only: [:show, :update, :destroy]
   before_action :set_comment, only: [:show, :update, :destroy]
+  before_action :is_list_or_comment_owner, only: [:destroy, :update]
 
   # GET /comments
   def index
@@ -43,9 +47,18 @@ class CommentsController < ApplicationController
     def set_comment
       @comment = Comment.find(params[:id])
     end
+    def set_card
+      @card = @list.cards.find(params[:card_id])
+    end
 
+    def set_list
+      @list = List.find(params[:list_id])
+    end
+    def is_list_or_comment_owner
+      render json: { error: 'You do not have permission for this' }, status: 403 unless @list.owner_id == @current_user.id || @comment.owner_id == @current_user.id 
+    end
     # Only allow a trusted parameter "white list" through.
     def comment_params
-      params.require(:comment).permit(:card_id, :comment_id, :content)
+      params.require(:comment).permit(:card_id, :comment_id, :list_id, :content)
     end
 end
