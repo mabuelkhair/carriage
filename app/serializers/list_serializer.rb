@@ -1,6 +1,4 @@
 class ListSerializer < ActiveModel::Serializer
   attributes :id, :title, :cards
-    def cards
-        object.try(:cards)
-    end
+  has_many :cards, each_serializer: CardSerializer
 end
