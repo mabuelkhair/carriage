@@ -6,12 +6,12 @@ class Admin::CardsController < ApplicationController
   # GET /cards
   def index
     @cards = @list.cards
-    render json: @cards
+    render json: @cards, each_serializer: CardSerializer
   end
 
   # GET /cards/1
   def show
-    render json: @card
+    render json: @card, serializer: CardSerializer
   end
 
   # POST /cards
