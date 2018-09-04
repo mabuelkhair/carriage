@@ -8,22 +8,22 @@ class Admin::ListsController < ApplicationController
   def index
     @lists = List.all
 
-    render json: @lists
+    render json: @lists, each_serializer: ListSerializer
   end
 
   # GET /lists/1
   def show
-    render json: @list
+    render json: @list, serializer: ListSerializer
   end
 
   # POST /lists
   def create
-    @current_user = User.find(@current_user['id']) if not x.instance_of? User
+    @current_user = User.find(@current_user['id']) if not @current_user.instance_of? User
     @list = @current_user.owned_lists.new(list_params)
 
     if @list.save
       @list.users << @current_user
-      render json: @list, status: :created
+      render json: @list, status: :created, serializer: ListSerializer
     else
       render json: @list.errors, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class Admin::ListsController < ApplicationController
   # PATCH/PUT /lists/1
   def update
     if @list.update(list_params)
-      render json: @list
+      render json: @list, serializer: ListSerializer
     else
       render json: @list.errors, status: :unprocessable_entity
     end
