@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+bundle install
+rails db:create
+rails db:migrate --trace
+rails db:seed --trace
+exec "$@"

@@ -1,0 +1,22 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    env_file:
+     - .env
+  web:
+    entrypoint: ["./wait-for-it.sh", "db:5432","--","bin/start"]
+    build: .
+    depends_on:
+      - db
+    links:
+      - redis
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - .:/carriage
+    env_file:
+     - .env
+    ports:
+      - "3000:3000"
+  redis:
+    image: redis
