@@ -1,7 +1,7 @@
 class User::CommentsController < ApplicationController
   before_action :authorize_as_admin
-  before_action :set_list, only: [:show, :update, :destroy]
-  before_action :set_card, only: [:show, :update, :destroy]
+  before_action :set_list
+  before_action :set_card
   before_action :set_comment, only: [:show, :update, :destroy]
   before_action :is_comment_owner, only: [:destroy, :update]
   before_action :is_list_member
@@ -20,10 +20,11 @@ class User::CommentsController < ApplicationController
 
   # POST /comments
   def create
-    @comment = Comment.new(comment_params)
-
+    @comment =  @card.comments.new(comment_params)
+    @comment.owner_id = @current_user['id']
+    
     if @comment.save
-      render json: @comment, status: :created, location: @comment
+      render json: @comment, status: :created
     else
       render json: @comment.errors, status: :unprocessable_entity
     end
