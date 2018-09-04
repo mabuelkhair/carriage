@@ -5,5 +5,6 @@ RUN mkdir /carriage
 WORKDIR /carriage
 ADD Gemfile /carriage/Gemfile
 ADD Gemfile.lock /carriage/Gemfile.lock
+RUN bundle lock --add-platform x86-mingw32 x86-mswin32 x64-mingw32 java
 RUN bundle install
 ADD . /carriage
