@@ -7,8 +7,8 @@ class Admin::CommentsController < ApplicationController
 
   # GET /comments
   def index
-    page_number = params[:page].to_i if params[:page]
-    page_number = 0 if page_number && page_number < 0
+    page_number = 0
+    page_number = params[:page].to_i if params[:page] && params[:page].to_i > 0
     @comments = @card.comments.offset(page_number*5).limit(5)
 
     render json: @comments, each_serializer: CommentSerializer
