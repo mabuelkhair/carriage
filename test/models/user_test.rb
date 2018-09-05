@@ -46,7 +46,9 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "test invalid email" do
-    user = User.create(username:"user1", password:"123456789", email:"invalidemail")
+    user = User.new(username:"user1", password:"123456789", email:"invalidemail")
+    assert_not user.save, "saved invalid email"
+    user = User.new(username:"user1", password:"123456789", email:"invalid@email")
     assert_not user.save, "saved invalid email"
   end
 end
