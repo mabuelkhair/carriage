@@ -15,6 +15,7 @@ class Comment < ApplicationRecord
   belongs_to :comment, class_name: "Comment", optional: true
 
   # == Validations ==========================================================
+  validates_length_of :content, maximum: 500, allow_nil: false, allow_blank: false
 
   # == Scopes ===============================================================
 
