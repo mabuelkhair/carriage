@@ -55,7 +55,6 @@ class Admin::ListsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_list
-      puts params.inspect
       @list = List.find(params[:id])
     end
 
