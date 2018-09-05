@@ -36,6 +36,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
+    $redis.del("user:#{@user.id}")
     @user.destroy
   end
 
