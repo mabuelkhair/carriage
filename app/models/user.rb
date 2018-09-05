@@ -16,6 +16,7 @@ class User < ApplicationRecord
   validates_uniqueness_of   :email
   validates_uniqueness_of   :username
   validates_length_of :password, maximum: 72, minimum: 8, allow_nil: false, allow_blank: false
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP } 
   # == Scopes ===============================================================
 
   # == Callbacks ============================================================
