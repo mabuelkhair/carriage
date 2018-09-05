@@ -25,7 +25,7 @@ class Admin::CommentsController < ApplicationController
     @comment.owner_id = @current_user['id']
     
     if @comment.save
-      IncrementCommentCache.call(@comment) unless @comment.comment_id
+      $redis.incr("card:#{@card.id}:comments")
       render json: @comment, status: :created, serializer: CommentSerializer
     else
       render json: @comment.errors, status: :unprocessable_entity
@@ -43,7 +43,7 @@ class Admin::CommentsController < ApplicationController
 
   # DELETE /comments/1
   def destroy
-    DecrementCommentCache.call(@comment) unless @comment.comment_id
+    $redis.decr("card:#{@card.id}:comments")
     @comment.destroy
   end
 
