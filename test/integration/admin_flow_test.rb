@@ -5,6 +5,7 @@ class AdminFlowTest < ActionDispatch::IntegrationTest
     @admin = User.create(username:"admin1", password:"123456789", email:"admin@test.com", role: "admin")
     @list = List.create(title: "test list",owner: @admin)
     @card = Card.create(owner: @admin, list: @list, title: "lorem ipsum", description: "lorem ipsum")
+    @user =  User.create(username:"user1", password:"123456789", email:"user@test.com")
     # @current_user = users(:admin)
   end
   
@@ -31,6 +32,23 @@ class AdminFlowTest < ActionDispatch::IntegrationTest
   test "create comment on card" do
     params = { comment: {content:"test comment"} }
     post "/admin/lists/#{@list.id}/cards/#{@card.id}/comments", headers:{"Authorization" => login, 'CONTENT_TYPE' => 'application/json'},
+       params:  params.to_json
+    assert_response :success
+  end
+
+  test "assign member to list" do
+    params = { user_id: @user.id }  
+    post "/admin/lists/#{@list.id}/assign_member", headers:{"Authorization" => login, 'CONTENT_TYPE' => 'application/json'},
+       params:  params.to_json
+    assert_response :success
+  end
+
+  test "unassign member to list" do
+    params = { user_id: @user.id }  
+    post "/admin/lists/#{@list.id}/assign_member", headers:{"Authorization" => login, 'CONTENT_TYPE' => 'application/json'},
+       params:  params.to_json
+    assert_response :success  
+    delete "/admin/lists/#{@list.id}/unassign_member", headers:{"Authorization" => login, 'CONTENT_TYPE' => 'application/json'},
        params:  params.to_json
     assert_response :success
   end
