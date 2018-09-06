@@ -2,9 +2,9 @@ require 'test_helper'
 
 class AdminFlowTest < ActionDispatch::IntegrationTest
   def setup
-    @user = User.create(username:"admin1", password:"123456789", email:"admin@test.com", role: "admin")
-    @list = List.create(title: "test list",owner: @user)
-    @card = Card.create(owner: @user, list: @list, title: "lorem ipsum", description: "lorem ipsum")
+    @admin = User.create(username:"admin1", password:"123456789", email:"admin@test.com", role: "admin")
+    @list = List.create(title: "test list",owner: @admin)
+    @card = Card.create(owner: @admin, list: @list, title: "lorem ipsum", description: "lorem ipsum")
     # @current_user = users(:admin)
   end
   
